@@ -1,8 +1,8 @@
 
 const config = {
   type: Phaser.AUTO,
-  width: 450,
-  height: 500,
+  width: 1450,
+  height: 900,
   physics: {
     default: 'arcade',
     arcade: {
@@ -10,7 +10,7 @@ const config = {
       enableBody: true,
     }
   },
-  scene: [StartScene, GameScene, EndScene]
+  scene: [StartScene, SelectScene]
 };
 
 const game = new Phaser.Game(config);

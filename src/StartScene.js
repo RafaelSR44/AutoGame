@@ -10,10 +10,24 @@ class StartScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.text(150, 200, 'Press SPACE to start', { fontSize: '20px', fill: '#fff' });
+    this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, "bg")
+    .setScale(0.75);
 
-    this.input.keyboard.on('keydown-SPACE', () => {
-      this.scene.start('GameScene');
+    this.add.image(this.cameras.main.centerX, this.cameras.main.centerY - 200, "logo")
+    .setScale(2.25);
+
+    const botao = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, "botao")
+    .setScale(1.75)
+    .setInteractive()
+    .on("pointerover", () => {
+      botao.setScale(1.8);
+    })
+    .on("pointerout", () => {
+      botao.setScale(1.75);
+    })
+    .on("pointerdown", () => {
+      this.scene.stop("StartScene");
+      this.scene.start("SelectScene");
     });
   }
 }  
