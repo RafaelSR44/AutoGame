@@ -5,7 +5,8 @@ class StartScene extends Phaser.Scene {
 
   preload() {
     this.load.image('logo', '../assets/StartScene/startLogo.png');
-    this.load.image('botao', '../assets/StartScene/startBo.png');
+    this.load.image('botaoJogar', '../assets/StartScene/BotaoJogar.svg');
+    this.load.image('botaoControles', '../assets/StartScene/BotaoControles.svg');
     this.load.image('bg', '../assets/StartScene/startBackground.png');
   }
 
@@ -16,18 +17,32 @@ class StartScene extends Phaser.Scene {
     this.add.image(this.cameras.main.centerX, this.cameras.main.centerY - 200, "logo")
     .setScale(2.25);
 
-    const botao = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, "botao")
-    .setScale(1.75)
+    const botaoJogar = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, "botaoJogar")
+    .setScale(0.75)
     .setInteractive()
     .on("pointerover", () => {
-      botao.setScale(1.8);
+      botaoJogar.setScale(0.8);
     })
     .on("pointerout", () => {
-      botao.setScale(1.75);
+      botaoJogar.setScale(0.75);
     })
     .on("pointerdown", () => {
       this.scene.stop("StartScene");
       this.scene.start("SelectScene");
+    });
+
+    const botaoControles = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 200, "botaoControles")
+    .setScale(0.75)
+    .setInteractive()
+    .on("pointerover", () => {
+      botaoControles.setScale(0.8);
+    })
+    .on("pointerout", () => {
+      botaoControles.setScale(0.75);
+    })
+    .on("pointerdown", () => {
+      this.scene.stop("StartScene");
+      this.scene.start("InstructionScene");
     });
   }
 }  

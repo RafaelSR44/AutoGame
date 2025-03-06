@@ -10,7 +10,7 @@ const config = {
       enableBody: true,
     }
   },
-  scene: [StartScene, SelectScene]
+  scene: [StartScene, InstructionScene, SelectScene, GameScene]
 };
 
 const game = new Phaser.Game(config);

@@ -7,6 +7,7 @@ class SelectScene extends Phaser.Scene {
     this.load.image('bg', '../assets/SelectScene/selectBackground.png');
     this.load.image('botaoAtira', '../assets/SelectScene/AtiradorBotao.svg');
     this.load.image('botaoLuta', '../assets/SelectScene/LutadorBotao.svg');
+    this.load.image('voltar', '../assets/SelectScene/BotaoVoltar.svg');
     this.load.spritesheet('jogadorAtirador', '../assets/SelectScene/AtaqueDistancia.png', { frameWidth: 100, frameHeight: 100 });
     this.load.spritesheet('jogadorLutador', '../assets/SelectScene/AtaqueCorpo.png', { frameWidth: 100, frameHeight: 100 });
     this.load.spritesheet('jogadorParado', '../assets/SelectScene/SoldadoParado.png', { frameWidth: 100, frameHeight: 100 });
@@ -73,6 +74,20 @@ class SelectScene extends Phaser.Scene {
 
     this.jogadorLutador = this.add.sprite(this.cameras.main.centerX + 200, this.cameras.main.centerY, "jogadorLutador")
     .setScale(3);
+
+    this.botaoVoltar = this.add.image(this.cameras.main.centerX - 550, this.cameras.main.centerY + 350, 'voltar')
+    .setScale(0.75)
+    .setInteractive()
+    .on('pointerover', () => {
+      this.botaoVoltar.setScale(0.8);
+    })
+    .on('pointerout', () => {
+      this.botaoVoltar.setScale(0.75);
+    })
+    .on('pointerdown', () => {
+      this.scene.start('StartScene');
+    });
+
 
   }
 }
