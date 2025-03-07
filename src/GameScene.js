@@ -16,11 +16,12 @@ class GameScene extends Phaser.Scene {
     this.load.spritesheet('jogadorAndando', './assets/GameScene/SoldadoAndando.png', { frameWidth: 100, frameHeight: 100 });
     this.load.spritesheet('jogadorDano', './assets/GameScene/SoldadoDano.png', { frameWidth: 100, frameHeight: 100 });
     this.load.spritesheet('jogadorMorte', './assets/GameScene/SoldadoMorte.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('OrcParado', './assets/GameScene/OrcParado.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('OrcAndando', './assets/GameScene/OrcAndando.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('OrcDano', './assets/GameScene/OrcDano.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('OrcMorte', './assets/GameScene/OrcMorte.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('OrcAtaque', './assets/GameScene/OrcAtaque.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('orcParado', './assets/GameScene/OrcParado.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('orcAndando', './assets/GameScene/OrcAndando.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('orcDano', './assets/GameScene/OrcDano.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('orcMorte', './assets/GameScene/OrcMorte.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('orcAtaque', './assets/GameScene/OrcAtaque.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('orcAtaqueEfeito', './assets/GameScene/OrcAtaqueEfeito.png', { frameWidth: 100, frameHeight: 100 });
     this.load.image('bg0', './assets/GameScene/BG_01/Layers/Sky.png');
     this.load.image('bg1', './assets/GameScene/BG_01/Layers/BG.png');
     this.load.image('bg2', './assets/GameScene/BG_01/Layers/Middle.png');
@@ -39,14 +40,24 @@ class GameScene extends Phaser.Scene {
     this.larguraJogo = 1450;
     this.alturaJogo = 900;
     this.teclado = this.input.keyboard.createCursorKeys();
-    this.pontuacao = 0;
     this.atirando = false;
     this.atacando = false;
+    this.dano = false;
+    this.morte = false;
+    this.atacandoOrc = false;
+    this.danoOrc = false;
+    this.morteOrc = false;
     this.vidaJogador;
     this.vidas = [];
     this.fundoVidas = [];
+    this.inimigoVida = 4;
+    this.pontos = 0;
+    this.placar = this.add.text(50, 100, 'Pontos: ' + this.pontos, { fontSize: '45px', fill: '#0000000' }).setScrollFactor(0);
+    this.direcaoEmpurrao = 0;
+    this.forcaEmpurrao = 200;
+    this.jogadorInv = false;
 
-    if(this.jogadorAtirador){
+    if (this.jogadorAtirador) {
       this.vidaJogador = 2;
     } else {
       this.vidaJogador = 4;
@@ -59,8 +70,8 @@ class GameScene extends Phaser.Scene {
     this.bg4 = this.add.tileSprite(this.cameras.main.centerX, this.cameras.main.centerY, 1450, 900, 'bg4').setScrollFactor(0).setDepth(-10);
     this.bg5 = this.add.tileSprite(this.cameras.main.centerX, this.cameras.main.centerY, 1450, 900, 'bg5').setScrollFactor(0).setDepth(-10);
 
-    for(let i = 1, j = 50, k = 50; i <= this.vidaJogador; i++, j+=50){
-      this.fundoVida = this.add.image(j,k,"fundoVida").setScrollFactor(0).setScale(2.5);
+    for (let i = 1, j = 50, k = 50; i <= this.vidaJogador; i++, j += 50) {
+      this.fundoVida = this.add.image(j, k, "fundoVida").setScrollFactor(0).setScale(2.5);
       this.vida = this.add.image(j, k, "vida").setScrollFactor(0).setScale(2.5);
       this.vidas.push(this.vida)
       this.fundoVidas.push(this.fundoVida)
@@ -81,19 +92,95 @@ class GameScene extends Phaser.Scene {
     // Definindo jogador
     this.jogador = this.physics.add.sprite(100, 850, 'jogadorParado').setScale(3).setDepth(1);
     this.jogador.body.setSize(20, 20);
+    this.jogador.setDrag(100, 100);
+
+    // Definindo Inimigo
+    this.inimigo = this.physics.add.sprite(400, 850, 'orcParado').setScale(3).setDepth(1);
+    this.inimigo.body.setSize(20, 20);
+    this.inimigo.setDrag(100, 100);
 
     // criando o chão
     this.chao = this.physics.add.staticImage(0, 900, 'chao').setScale(3).refreshBody().setVisible(false);
     this.physics.add.collider(this.jogador, this.chao); // Colisão entre o jogador e o chão
+    this.physics.add.collider(this.inimigo, this.chao); // Colisão entre o inimigo e o chão
 
     // criando o chão
     this.parede = this.physics.add.staticImage(0, 0, 'parede').setScale(3).refreshBody().setVisible(false);
     this.physics.add.collider(this.jogador, this.parede); // Colisão entre o jogador e a parede
+    this.physics.add.collider(this.inimigo, this.parede); // Colisão entre o inimigo e a parede
+
+    this.physics.add.overlap(this.flecha, this.inimigo, () => {
+      this.direcaoEmpurrao = new Phaser.Math.Vector2(this.inimigo.x - this.flecha.x, this.inimigo.y - this.flecha.y).normalize();
+      if (this.inimigoVida > 0) {
+        this.inimigo.anims.play('orcDanoA', true);
+        this.desativarFlechada();
+        this.inimigoVida--;
+        this.inimigo.setVelocity(this.direcaoEmpurrao.x * this.forcaEmpurrao, this.direcaoEmpurrao.y * this.forcaEmpurrao);
+
+      } else {
+        this.inimigoVida = 4;
+        this.inimigo.anims.play('orcMorteA', true);
+        this.time.delayedCall(1000, () => {
+          this.inimigo.setVisible(false); //esconde o inimigo
+          this.inimigo.setVelocity(0, 0);
+          this.inimigo.setPosition(this.inimigo.x + 800, 850); //posiciona o inimigo em uma posição aleatória
+          this.inimigo.setVisible(true); //mostra o inimigo
+        });
+        this.desativarFlechada();//desativa o tiro
+        this.pontos += 10;
+        this.placar.setText('Pontos: ' + this.pontos);
+      }
+    });
+
+    //Colisão do ataque corpo a corpo com o inimigo
+    this.physics.add.overlap(this.ataque, this.inimigo, () => {
+      this.direcaoEmpurrao = new Phaser.Math.Vector2(this.inimigo.x - this.ataque.x, this.inimigo.y - this.ataque.y).normalize();
+      if (this.inimigoVida > 0) {
+        this.inimigo.anims.play('orcDanoA', true);
+        this.desativarAtacar();
+        this.inimigoVida -= 0.5;
+        this.inimigo.setVelocity(this.direcaoEmpurrao.x * this.forcaEmpurrao, this.direcaoEmpurrao.y * this.forcaEmpurrao);
+
+      } else {
+        this.inimigoVida = 4;
+        this.inimigo.anims.play('orcMorteA', true);
+        this.time.delayedCall(1000, () => {
+          this.inimigo.setVisible(false); //esconde o inimigo
+          this.inimigo.setVelocity(0, 0);
+          this.inimigo.setPosition(this.inimigo.x + 400, 850); //posiciona o inimigo em uma posição aleatória
+          this.inimigo.setVisible(true); //mostra o inimigo
+        });
+        this.desativarAtacar();//desativa o tiro
+        this.pontos += 10;
+        this.placar.setText('Pontos: ' + this.pontos);
+      }
+    });
+
+    this.physics.add.overlap(this.inimigo, this.jogador, () => {
+      if (this.vidaJogador > 0 && !this.jogadorInv) {
+
+        this.deletaVida = this.vidas.pop();
+        this.deletaVida.setVisible(false);
+        this.vidaJogador--;
+        this.jogador.setAlpha(0.5);
+        
+        this.jogadorInv = true;
+        this.time.delayedCall(2000, ()=>{
+          this.jogadorInv = false;
+          this.jogador.setAlpha(1);
+        })
+      } else if(this.vidaJogador <= 0) {
+        this.scene.stop("GameScene");
+        this.scene.start("EndScene");
+      }
+    });
 
     // criando camera para seguir o player
     this.cameras.main.startFollow(this.jogador);
-    this.cameras.main.setBounds(0, 0, 3000, 600);
+    this.cameras.main.setBounds(0, 0, 10000, 600);
 
+    //ANIMAÇÕES
+    //ANIMAÇÕES DO JOGADOR
     this.anims.create({
       key: 'jogadorParadoA',
       frames: this.anims.generateFrameNumbers('jogadorParado', { start: 0, end: 5 }),
@@ -106,20 +193,6 @@ class GameScene extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers('jogadorAndando', { start: 0, end: 7 }),
       frameRate: 10,
       repeat: -1
-    });
-
-    this.anims.create({
-      key: 'jogadorMorteA',
-      frames: this.anims.generateFrameNumbers('jogadorMorte', { start: 0, end: 3 }),
-      frameRate: 10,
-      repeat: 0
-    });
-
-    this.anims.create({
-      key: 'jogadorDanoA',
-      frames: this.anims.generateFrameNumbers('jogadorDano', { start: 0, end: 3 }),
-      frameRate: 10,
-      repeat: 0
     });
 
     this.anims.create({
@@ -140,7 +213,36 @@ class GameScene extends Phaser.Scene {
       key: 'jogadorLutadorEfeitoA',
       frames: this.anims.generateFrameNumbers('jogadorLutadorEfeito', { start: 0, end: 5 }),
       frameRate: 10,
+      repeat: 0
+    });
+
+    //ANIMAÇÕES DO ORC
+    this.anims.create({
+      key: 'orcParadoA',
+      frames: this.anims.generateFrameNumbers('orcParado', { start: 0, end: 5 }),
+      frameRate: 10,
       repeat: -1
+    });
+
+    this.anims.create({
+      key: 'orcAndandoA',
+      frames: this.anims.generateFrameNumbers('orcAndando', { start: 0, end: 7 }),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'orcDanoA',
+      frames: this.anims.generateFrameNumbers('orcDano', { start: 0, end: 3 }),
+      frameRate: 10,
+      repeat: 0
+    });
+
+    this.anims.create({
+      key: 'orcMorteA',
+      frames: this.anims.generateFrameNumbers('orcMorte', { start: 0, end: 3 }),
+      frameRate: 10,
+      repeat: 0
     });
 
   }
@@ -243,6 +345,24 @@ class GameScene extends Phaser.Scene {
 
     if (this.flecha.x < this.jogador.x - 400 || this.flecha.x > this.jogador.x + 400 || this.flecha.y < this.jogador.y - 200) {
       this.desativarFlechada();
+    }
+
+    //movimento do Orc
+    if (this.jogador.x < this.inimigo.x + 400 && this.jogador.x > this.inimigo.x - 400) {
+      if (this.inimigo.x < this.jogador.x) {
+        this.inimigo.setVelocityX(50);
+        this.inimigo.flipX = false;
+      } else {
+        this.inimigo.setVelocityX(-50);
+        this.inimigo.flipX = true;
+      }
+    } else {
+      this.inimigo.setVelocityX(0);
+      this.inimigo.anims.play("orcParadoA", true)
+    }
+
+    if (this.inimigo.body.velocity.x >= 50 || this.inimigo.body.velocity.x <= -50) {
+      this.inimigo.anims.play('orcAndandoA', true);
     }
 
   }
