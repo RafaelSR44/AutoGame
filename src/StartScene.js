@@ -31,7 +31,7 @@ class StartScene extends Phaser.Scene {
       this.scene.start("SelectScene");
     });
 
-    const botaoControles = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 200, "botaoControles")
+    const botaoControles = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 150, "botaoControles")
     .setScale(0.75)
     .setInteractive()
     .on("pointerover", () => {
