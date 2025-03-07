@@ -4,13 +4,13 @@ class SelectScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('bg', '../assets/SelectScene/selectBackground.png');
-    this.load.image('botaoAtira', '../assets/SelectScene/AtiradorBotao.svg');
-    this.load.image('botaoLuta', '../assets/SelectScene/LutadorBotao.svg');
-    this.load.image('voltar', '../assets/SelectScene/BotaoVoltar.svg');
-    this.load.spritesheet('jogadorAtirador', '../assets/SelectScene/AtaqueDistancia.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('jogadorLutador', '../assets/SelectScene/AtaqueCorpo.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('jogadorParado', '../assets/SelectScene/SoldadoParado.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.image('bg', './assets/SelectScene/selectBackground.png');
+    this.load.image('botaoAtira', './assets/SelectScene/AtiradorBotao.svg');
+    this.load.image('botaoLuta', './assets/SelectScene/LutadorBotao.svg');
+    this.load.image('voltar', './assets/SelectScene/BotaoVoltar.svg');
+    this.load.spritesheet('jogadorAtirador', './assets/SelectScene/AtaqueDistancia.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('jogadorLutador', './assets/SelectScene/AtaqueCorpo.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('jogadorParado', './assets/SelectScene/SoldadoParado.png', { frameWidth: 100, frameHeight: 100 });
   }
 
   create() {

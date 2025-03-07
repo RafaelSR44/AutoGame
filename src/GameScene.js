@@ -9,29 +9,29 @@ class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.spritesheet('jogadorAtirador', '../assets/GameScene/AtaqueDistancia.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('jogadorLutador', '../assets/GameScene/AtaqueCorpo.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('jogadorLutadorEfeito', '../assets/GameScene/AtaqueCorpoEfeito.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('jogadorParado', '../assets/GameScene/SoldadoParado.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('jogadorAndando', '../assets/GameScene/SoldadoAndando.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('jogadorDano', '../assets/GameScene/SoldadoDano.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('jogadorMorte', '../assets/GameScene/SoldadoMorte.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('OrcParado', '../assets/GameScene/OrcParado.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('OrcAndando', '../assets/GameScene/OrcAndando.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('OrcDano', '../assets/GameScene/OrcDano.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('OrcMorte', '../assets/GameScene/OrcMorte.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.spritesheet('OrcAtaque', '../assets/GameScene/OrcAtaque.png', { frameWidth: 100, frameHeight: 100 });
-    this.load.image('bg0', '../assets/GameScene/BG_01/Layers/Sky.png');
-    this.load.image('bg1', '../assets/GameScene/BG_01/Layers/BG.png');
-    this.load.image('bg2', '../assets/GameScene/BG_01/Layers/Middle.png');
-    this.load.image('bg3', '../assets/GameScene/BG_01/Layers/Foreground.png');
-    this.load.image('bg4', '../assets/GameScene/BG_01/Layers/Ground_01.png');
-    this.load.image('bg5', '../assets/GameScene/BG_01/Layers/Ground_02.png');
-    this.load.image('flecha', '../assets/GameScene/Flecha.png');
-    this.load.image('chao', '../assets/GameScene/Chao.png');
-    this.load.image('parede', '../assets/GameScene/Parede.png');
-    this.load.image('vida', '../assets/GameScene/basic/heart.png');
-    this.load.image('fundoVida', '../assets/GameScene/basic/background.png');
+    this.load.spritesheet('jogadorAtirador', './assets/GameScene/AtaqueDistancia.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('jogadorLutador', './assets/GameScene/AtaqueCorpo.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('jogadorLutadorEfeito', './assets/GameScene/AtaqueCorpoEfeito.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('jogadorParado', './assets/GameScene/SoldadoParado.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('jogadorAndando', './assets/GameScene/SoldadoAndando.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('jogadorDano', './assets/GameScene/SoldadoDano.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('jogadorMorte', './assets/GameScene/SoldadoMorte.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('OrcParado', './assets/GameScene/OrcParado.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('OrcAndando', './assets/GameScene/OrcAndando.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('OrcDano', './assets/GameScene/OrcDano.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('OrcMorte', './assets/GameScene/OrcMorte.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.spritesheet('OrcAtaque', './assets/GameScene/OrcAtaque.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.image('bg0', './assets/GameScene/BG_01/Layers/Sky.png');
+    this.load.image('bg1', './assets/GameScene/BG_01/Layers/BG.png');
+    this.load.image('bg2', './assets/GameScene/BG_01/Layers/Middle.png');
+    this.load.image('bg3', './assets/GameScene/BG_01/Layers/Foreground.png');
+    this.load.image('bg4', './assets/GameScene/BG_01/Layers/Ground_01.png');
+    this.load.image('bg5', './assets/GameScene/BG_01/Layers/Ground_02.png');
+    this.load.image('flecha', './assets/GameScene/Flecha.png');
+    this.load.image('chao', './assets/GameScene/Chao.png');
+    this.load.image('parede', './assets/GameScene/Parede.png');
+    this.load.image('vida', './assets/GameScene/basic/heart.png');
+    this.load.image('fundoVida', './assets/GameScene/basic/background.png');
   }
 
   create() {

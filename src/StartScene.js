@@ -4,10 +4,10 @@ class StartScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('logo', '../assets/StartScene/startLogo.png');
-    this.load.image('botaoJogar', '../assets/StartScene/BotaoJogar.svg');
-    this.load.image('botaoControles', '../assets/StartScene/BotaoControles.svg');
-    this.load.image('bg', '../assets/StartScene/startBackground.png');
+    this.load.image('logo', './assets/StartScene/startLogo.png');
+    this.load.image('botaoJogar', './assets/StartScene/BotaoJogar.svg');
+    this.load.image('botaoControles', './assets/StartScene/BotaoControles.svg');
+    this.load.image('bg', './assets/StartScene/startBackground.png');
   }
 
   create() {

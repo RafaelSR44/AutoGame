@@ -4,9 +4,9 @@ class InstructionScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('bg', '../assets/InstructionScene/Background.png');
-    this.load.image('controles', '../assets/InstructionScene/controles.svg');
-    this.load.image('voltar', '../assets/InstructionScene/BotaoVoltar.svg');
+    this.load.image('bg', './assets/InstructionScene/Background.png');
+    this.load.image('controles', './assets/InstructionScene/controles.svg');
+    this.load.image('voltar', './assets/InstructionScene/BotaoVoltar.svg');
   }
 
   create() {
